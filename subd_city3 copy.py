@@ -1,8 +1,10 @@
 import re
+import string
 import sys
 import os
 import random
 import math
+from tokenize import group
 from webbrowser import get
 
 SCRIPT_DIR = os.path.dirname(__file__)
@@ -95,7 +97,96 @@ class Engine:
                     
                     self.mesh = newMesh
 
+class selector:
+    def __init__(self, mesh):
+        self.mesh = mesh
+        self.select_from = []
+        self.select_ratio = 1
 
+        self._selected_faces = []
+        self._unslected_faces = []
+        self._divide_to = None
+        self.unselected_to = ""
+
+    @property
+    def divide_to(self):
+        return self._divide_to
+    
+    @divide_to.setter
+    def devide_to(self, value):
+        pass
+
+    @property
+    def selected(self):
+        if self._selected_faces != [] or self._unslected_faces != []:
+            pass
+        else:
+            for f in self.select_from:
+                if random.random() < self.select_ratio:
+                    self._selected_faces.append(f)
+                else:
+                    self._unslected_faces.append(f)
+        return self._selected_faces
+    
+    @property
+    def unselected(self):
+        if self._selected_faces != [] or self._unslected_faces != []:
+            pass
+        else:
+            self.selected()
+        return self._unslected_faces
+    
+
+    def by_orientation(self, orientation_name):
+        up = down = side = []
+
+        for f in self.mesh.faces:
+            normal_z = mola.face_normal(f).z
+            if normal_z > 0.1:
+                up.append(f)
+            elif normal_z < -0.1:
+                down.append(f)
+            else:
+                side.append(f)
+        
+        if orientation_name == "up":
+            return up
+        elif orientation_name == "down":
+            return down
+        elif orientation_name == "side":
+            return side
+        else:
+            return
+
+    def by_index(self, index):
+        pass
+
+    def by_group(self, group_name):
+        selected_faces = []
+        for f in self.mesh.faces:
+            if f.group == group_name:
+                selected_faces.append(f)
+        return selected_faces
+
+    def assign_unselected(self):
+        pass
+    
+    def assign_group(self, **kwargs):
+        for key, value in kwargs.items():
+            faces = self.by_orientation(key)
+            for f in faces:
+                f.group = value
+
+mesh = citymesh.my_city
+my_selector = selector(mesh)
+my_selector.select_from = my_selector.by_orientation("up")
+my_selector.select_ratio = 0.9
+# my_selector.unselected_to = "roof"
+# my_selector.divide_to = my_selector.by_orientation({"up":"room_up", "side":"room_side"})
+
+print(len(my_selector.selected))
+
+my_selector.assign_unselected()
 
 selector1 = {"select_from":"room_up", "ratio": 0.9, "left": "roof"}
 rule1 = {"subd": ["face_extrude_tapered"], "arg": [[5, 0, True]]}
@@ -116,13 +207,15 @@ selector5 = {"select_from":"plot", "ratio": 0.9, "left": "plaza"}
 rule5 = {"subd": ["face_split_grid"], "arg": [[2, 1]]}
 
 
-my_rules = [
-    [selector1, rule1],
-    [selector2, rule2]
-]
-mesh = citymesh.my_city
-my_engine = Engine(mesh)
-my_engine.group_mesh_faces()
-my_engine.rules = my_rules
-my_engine.subdivide(10)
-print(len(my_engine.mesh.faces))
+# my_rules = [
+#     [selector1, rule1],
+#     [selector2, rule2]
+# ]
+# mesh = citymesh.my_city
+# my_engine = Engine(mesh)
+# my_engine.group_mesh_faces()
+# my_engine.rules = my_rules
+# my_engine.subdivide(10)
+# print(len(my_engine.mesh.faces))
+
+
