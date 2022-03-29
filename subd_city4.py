@@ -8,9 +8,9 @@ import mola
 mesh_city = mola.Mesh()
 
 a = mesh_city.add_vertex(0, 0, 0)
-b = mesh_city.add_vertex(100, 0, 0)
-c = mesh_city.add_vertex(100, 100, 0)
-d = mesh_city.add_vertex(0, 100, 0)
+b = mesh_city.add_vertex(274, 0, 0)
+c = mesh_city.add_vertex(274, 80, 0)
+d = mesh_city.add_vertex(0, 80, 0)
 mesh_city.add_face([a, b, c, d])
 
 engine = mola.Engine(mesh_city)
