@@ -21,6 +21,7 @@ engine.rules.append([{"select":"block_s", "ratio": 1.0}, {"subd": "mesh_catmull"
 
 engine.rules.append([{"select":"block_ss", "ratio": 0.95}, {"subd": "face_split_grid", "arg": [2, 1]}])
 engine.rules.append([{"select":"block_sss", "ratio": 0.95}, {"subd": "face_split_grid", "arg": [1, 2]}])
+
 engine.rules.append([{"select":"plot", "ratio": 0.95}, {"subd": "face_extrude_tapered", "arg": [0, 0.4]}])
 engine.rules.append([{"select":"construct_up", "ratio": 0.8}, {"subd": "face_extrude_tapered", "arg": [5, 0]}])
 engine.rules.append([{"select":"construct_side", "ratio": 0}, {"subd": "face_extrude_tapered", "arg": [5, 0]}])
