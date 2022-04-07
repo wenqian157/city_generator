@@ -38,7 +38,7 @@ mesh_city.faces = engine.subdivide(selector(mesh_city.faces, filter1, 0.95), "fa
 
 engine.change_face_group(mesh_city.faces, "block", "plot")
 mesh_city.faces = engine.subdivide(selector(mesh_city.faces, filter2, 0.95), "face_extrude_tapered", 0, 0.4, group=True)
-for _ in range(10):
+for _ in range(6):
     mesh_city.faces = engine.subdivide(selector(mesh_city.faces, filter3, 0.8), "face_extrude_tapered", 5, 0, group=True)
 
 engine.change_face_group(mesh_city.faces, "construct_up", "roof")
