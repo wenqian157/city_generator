@@ -2,13 +2,15 @@ import sys
 import os
 import random
 
+from sympy import Not
+
 SCRIPT_DIR = os.path.dirname(__file__)
 sys.path.append(os.path.dirname(SCRIPT_DIR))
 import mola 
 # from mola import filter
 # from mola import selector
 
-mesh_city = mola.Engine()
+mesh_city = mola.Mesh()
 
 a = mesh_city.add_vertex(0, 0, 0)
 b = mesh_city.add_vertex(274, 0, 0)
@@ -16,13 +18,16 @@ c = mesh_city.add_vertex(274, 80, 0)
 d = mesh_city.add_vertex(0, 80, 0)
 mesh_city.add_face([a, b, c, d])
 
+engine = mola.Engine()
+# print(engine.successor_rules)
+
 def my_filter(face):
     return face.area() > 100
 
-filtered = filter(my_filter, mesh_city.faces)
-print(list(filtered))
+# filtered = filter(Not(my_filter), mesh_city.faces)
+# print(list(filtered))
 
-mesh_city.subdivide(faces, my_filter, rule)
+mesh_city.faces = engine.subdivide(mesh_city.faces, my_filter, 1.0, "face_extrude_tapered", 0, 0.4)
 
 # # filter
 # # takes one face, returns boolean
